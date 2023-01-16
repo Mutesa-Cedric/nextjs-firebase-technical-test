@@ -33,6 +33,7 @@ export default function Home({ gifs }: { gifs: Gif[] }) {
   const currentPageData = gifs.slice(pageStart, pageEnd);
   const totalPages = Math.ceil(gifs.length / 3);
 
+  // handling  page change during pagination
   const handlePageChange = ({ selected }: { selected: number }) => {
     if (selected === currentPage) return;
     if (selected < 0 || selected >= totalPages) return;

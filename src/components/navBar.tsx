@@ -20,7 +20,6 @@ const links: Link[] = [
 
 const NavBar = () => {
     const { user, logout } = useAuth();
-    console.log(user);
     return (
         <div className='w-full shadow-md py-4 px-10 flex items-center justify-between'>
 
