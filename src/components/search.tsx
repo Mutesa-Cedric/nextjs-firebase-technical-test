@@ -12,9 +12,8 @@ const Search = () => {
     // redirect to results page on search change
     useEffect(() => {
         // redirect to results page
-        search.length > 0 ?
-            router.push(`/results?q=${search}`):
-        router.push(`/`);
+        search.length > 0 &&
+            router.push(`/results?q=${search}`);
     }, [search]);
 
     // handle change

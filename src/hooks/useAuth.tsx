@@ -49,19 +49,19 @@ export function AuthProvider({ children }: AuthProviderProps) {
         () =>
             onAuthStateChanged(auth, (fbUser) => {
                 if (fbUser) {
+                    console.log("firebase user : ")
+                    console.log(fbUser)
                     // Logged in...
                     setUser(fbUser)
                 } else {
                     // Not logged in...
                     setUser(null);
-                    if (router.pathname !== "/login") {
-                        router.push("/signup")
-                    }
+                    router.push("/signup")
                 }
                 // set initial loading to false after redirecting
                 setInitialLoading(false);
             }),
-        [auth]
+        [auth, user]
     )
     // User is authenticated
 
@@ -91,6 +91,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
     // signin function
     const signIn = async (email: string, password: string) => {
         setLoading(true);
+
         await signInWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
                 setLoading(false)
@@ -114,7 +115,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
             // setLoading(false);
             setUser(null);
             alert("user logged out successfully!")
-            if (user === null) router.push('/login');
+            router.reload();
         }).catch((err) => {
             setError(err.message);
             alert(err.message);
