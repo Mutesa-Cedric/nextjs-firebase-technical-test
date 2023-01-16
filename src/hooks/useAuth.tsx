@@ -44,24 +44,31 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const [error, setError] = useState<string | null>(null);
     const [initialLoading, setInitialLoading] = useState(true);
 
+    // list of all protected routes
+    const protectedRoutes = [
+        '/',
+    ]
+
+
     // User is authenticated
     useEffect(
         () =>
             onAuthStateChanged(auth, (user) => {
                 if (user) {
                     // Logged in...
-                    router.push('/')
                     setUser(user)
-                    setLoading(false)
                 } else {
                     // Not logged in...
                     setUser(null)
-                    setLoading(true)
-                    router.push('/signup')
+
+                    // check if the current path is in protected routes
+                    if (protectedRoutes.includes(router.pathname)) {
+                        router.push('/signup')
+                    }
                 }
-                setTimeout(() => {
-                    setInitialLoading(false)
-                }, 800)
+
+                // set initial loading to false after redirecting
+                setInitialLoading(false);
             }),
         [auth]
     )
@@ -80,7 +87,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         await createUserWithEmailAndPassword(auth, email, password)
             .then((userCredential) => {
                 setUser(userCredential.user);
-                console.log(user);
+                alert("user created successfully!")
                 router.push('/items');
                 setLoading(false)
             }).catch((err) => {
@@ -98,6 +105,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
             .then((userCredential) => {
                 setLoading(false)
                 setUser(userCredential.user);
+                alert("user logged in successfully!")
                 router.push('/');
             }).catch((err) => {
                 setError(err.message);

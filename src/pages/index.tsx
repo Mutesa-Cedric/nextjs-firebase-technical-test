@@ -1,7 +1,28 @@
+import { Gif } from '@/@types';
 import Head from 'next/head'
-import Image from 'next/image'
+import Image from 'next/legacy/image'
 
-export default function Home() {
+// passign props to the component from trending gifs with getStaticProps
+
+export async function getStaticProps() {
+  const res = await fetch(`https://api.giphy.com/v1/gifs/trending?api_key=${process.env.NEXT_PUBLIC_GIPHY_API_KEY}&limit=25&rating=g`);
+  const { data } = await res.json();
+  const gifs = data.map((gif: any) => {
+    return {
+      id: gif.id,
+      title: gif.title,
+      imagerl: gif.images.downsized_medium.url
+    }
+  })
+  return {
+    props: {
+      gifs
+    }
+  }
+}
+
+
+export default function Home({ gifs }: { gifs: Gif[] }) {
   return (
     <>
       <Head>
@@ -10,11 +31,21 @@ export default function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <main >
-        Home page
+
+      <main className='w-full h-full flex flex-col  space-y-3'>
+        <h1 className='font-medium text-xl'>Trending gifs</h1>
+        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
+          {
+            gifs.map(gif => (
+              <div key={gif.id} className='w-full h-64 relative'>
+                <Image src={gif.url} layout="fill" alt={gif.title} />
+              </div>
+            ))
+          }
+        </div>
       </main>
     </>
   )
 }
 
-Home.layout="main"
+Home.layout = "main"

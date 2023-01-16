@@ -11,6 +11,9 @@
         @apply w-full bg-black/75 text-white rounded-md py-2 font-medium text-sm hover:bg-black;
     }
 
+    .submit-btn.loading{
+        @apply  bg-gray-300 cursor-not-allowed;
+    }
     .form-label{
         @apply text-sm font-medium text-gray-700;
     }

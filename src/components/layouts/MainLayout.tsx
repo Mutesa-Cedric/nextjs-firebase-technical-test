@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { use } from 'react'
 import Search from '../search'
-
+import useAuth from '@/hooks/useAuth';
+import LoadingSpinner from '../loader';
 
 interface ILayoutProps {
     children: React.ReactNode
@@ -8,15 +9,21 @@ interface ILayoutProps {
 
 
 const MainLayout: React.FC<ILayoutProps> = ({ children }) => {
+
+    // grab loading state for the first time the app loads
+    const { initialLoading } = useAuth();
+
     return (
         <div className='w-full h-screen overflow-hidden bg-white flex flex-col space-y-4 py-12 px-8'>
-            {/* search bar */}
-            <Search />
-
-            {/* main content */}
-            <div>
-                {children}
-            </div>
+            {
+                initialLoading ?
+                    <LoadingSpinner /> :
+                    <div className='space-y-5'>
+                        <Search />
+                        {/* main content */}
+                        {children}
+                    </div>
+            }
         </div>
     )
 }

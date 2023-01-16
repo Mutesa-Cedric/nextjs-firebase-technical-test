@@ -6,7 +6,7 @@ import React, { useState } from 'react'
 
 
 const Signup = () => {
-    const { signUp } = useAuth();
+    const { signUp, loading } = useAuth();
 
     // form data state
     const [formData, setFormData] = useState({
@@ -39,23 +39,30 @@ const Signup = () => {
                 {/* signup page (with email and password) */}
                 <div className='w-full max-w-md shadow px-4 py-6 space-y-8 rounded-md'>
                     <h1 className='text-3xl font-bold text-gray-800 mb-4'>Create an account</h1>
-                    <form className='space-y-6'>
+                    <form onSubmit={handleFormSubmit} className='space-y-6'>
                         <div className='space-y-2'>
 
                             <label htmlFor='email' className='form-label'>Email</label>
-                            <input type='email' name='email' id='email'
+                            <input
+                                value={formData.email}
+                                onChange={handleInputChange}
+                                type='email' name='email' id='email'
                                 className='form-input' />
 
                         </div>
 
                         <div className='space-y-2'>
-                            <label htmlFor='password' className='form-label'>Email</label>
-                            <input type='password' name='password' id='password'
+                            <label htmlFor='password' className='form-label'>Password</label>
+                            <input
+                                value={formData.password}
+                                onChange={handleInputChange}
+                                type='password' name='password' id='password'
                                 className='form-input' />
                         </div>
 
 
-                        <button type='submit' className='submit-btn'>Signup</button>
+                        <button disabled={loading} type='submit' className={` ${loading && "loading"} submit-btn`}>
+                            {loading ? <LoadingSpinner /> : "Signup"}</button>
                     </form>
                     {/* already have an account */}
                     <div className=''>

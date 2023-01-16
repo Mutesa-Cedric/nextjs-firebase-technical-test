@@ -17,8 +17,9 @@ const Search = () => {
     }, [search]);
 
     return (
-        <div>
-
+        <div className=' w-full h-12 bg-slate-200 flex items-center justify-center'>
+            {/* */}
+            search bar
         </div>
     )
 }
