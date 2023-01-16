@@ -123,6 +123,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         await signOut(auth).then(() => {
             // setLoading(false);
             setUser(null);
+            alert("user logged out successfully!")
             router.push('/login');
         }).catch((err) => {
             setError(err.message);

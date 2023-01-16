@@ -1,6 +1,8 @@
 import { Gif } from '@/@types';
+import GifCard from '@/components/gifCard';
 import Head from 'next/head'
-import Image from 'next/legacy/image'
+import Pagination from 'react-paginate';
+import { useState } from 'react';
 
 // passign props to the component from trending gifs with getStaticProps
 
@@ -11,7 +13,8 @@ export async function getStaticProps() {
     return {
       id: gif.id,
       title: gif.title,
-      imagerl: gif.images.downsized_medium.url
+      username: gif.username,
+      url: gif.images.downsized_medium.url
     }
   })
   return {
@@ -23,6 +26,19 @@ export async function getStaticProps() {
 
 
 export default function Home({ gifs }: { gifs: Gif[] }) {
+
+  const [currentPage, setCurrentPage] = useState(0);
+  const pageStart = currentPage * 3;
+  const pageEnd = pageStart + 3;
+  const currentPageData = gifs.slice(pageStart, pageEnd);
+  const totalPages = Math.ceil(gifs.length / 3);
+
+  const handlePageChange = ({ selected }: { selected: number }) => {
+    if (selected === currentPage) return;
+    if (selected < 0 || selected >= totalPages) return;
+    setCurrentPage(selected);
+  };
+
   return (
     <>
       <Head>
@@ -32,17 +48,43 @@ export default function Home({ gifs }: { gifs: Gif[] }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <main className='w-full h-full flex flex-col  space-y-3'>
-        <h1 className='font-medium text-xl'>Trending gifs</h1>
-        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6'>
-          {
-            gifs.map(gif => (
-              <div key={gif.id} className='w-full h-64 relative'>
-                <Image src={gif.url} layout="fill" alt={gif.title} />
-              </div>
-            ))
-          }
+      <main className='w-full h-full flex flex-col  justify-between'>
+
+        <div className='flex flex-col space-y-8'>
+          <h1 className='font-medium text-xl'>Trending GIFs</h1>
+
+          {/* gifs */}
+          <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full'>
+            {
+              currentPageData.map(gif => (
+                <GifCard key={gif.id} {...gif} />
+              ))
+            }
+          </div>
         </div>
+
+        {/* pagination */}
+        <Pagination
+          className="mt-2 mx-auto flex justify-center"
+          pageCount={gifs.length / 3}
+          forcePage={currentPage}
+          onPageChange={({ selected }) => setCurrentPage(selected)}
+          containerClassName='pagination'
+          pageClassName='page-item'
+          pageLinkClassName='page-link'
+          activeClassName='active'
+          previousClassName='previous'
+          nextClassName={`next ${currentPage === totalPages - 1 ? 'disabled' : ''}`}
+          disabledClassName='disabled'
+          previousLinkClassName='previous-link'
+          nextLinkClassName='next-link'
+          breakClassName='break'
+          breakLinkClassName='break-link'
+          marginPagesDisplayed={1}
+          pageRangeDisplayed={3}
+          onPageActive={handlePageChange}
+        />
+
       </main>
     </>
   )

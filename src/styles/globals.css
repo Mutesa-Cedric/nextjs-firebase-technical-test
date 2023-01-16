@@ -17,4 +17,30 @@
     .form-label{
         @apply text-sm font-medium text-gray-700;
     }
+
+    .pagination {
+        @apply p-2 mt-3;
+    }
+    
+    .page-item {
+        @apply inline-block  px-2 py-1 mr-2 text-center;
+        background-color: #fff;
+        color: #111;
+    }
+    
+    .page-link {
+        @apply text-black;
+    }
+    
+    .active {
+        @apply text-black bg-[#EB518F]/50 px-3 border-b-4 border-b-[#EB518F];
+    }
+    
+    .previous, .next {
+        @apply bg-white text-gray-800 rounded-md px-2 py-1 mr-2 text-center;
+    }
+    
+    .disabled {
+        @apply opacity-50 cursor-not-allowed z-20;
+    }
 }

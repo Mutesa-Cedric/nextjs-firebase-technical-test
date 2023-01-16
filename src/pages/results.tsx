@@ -36,4 +36,6 @@ const Results = () => {
     )
 }
 
+Results.layout = "main"
+
 export default Results

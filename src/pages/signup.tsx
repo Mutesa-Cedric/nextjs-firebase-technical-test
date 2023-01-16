@@ -1,4 +1,4 @@
-import LoadingSpinner from '@/components/loader'
+import LoadingSpinner from '@/components/loadingSpinner'
 import useAuth from '@/hooks/useAuth'
 import Head from 'next/head'
 import Link from 'next/link'
