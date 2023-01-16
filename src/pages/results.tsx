@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from "next/router";
 import GifCard from '@/components/gifCard';
-import { Gif } from '@/@types';
 import Pagination from 'react-paginate';
 import LoadingSpinner from '@/components/loadingSpinner';
 import Head from 'next/head';
