@@ -44,11 +44,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const [error, setError] = useState<string | null>(null);
     const [initialLoading, setInitialLoading] = useState(true);
 
-    // list of all protected routes
-    const protectedRoutes = [
-        '/',
-    ]
-
 
     // User is authenticated
     useEffect(
@@ -60,13 +55,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
                 } else {
                     // Not logged in...
                     setUser(null)
-
-                    // check if the current path is in protected routes
-                    if (protectedRoutes.includes(router.pathname)) {
-                        router.push('/signup')
-                    }
+                    router.push("/signup")
                 }
-
                 // set initial loading to false after redirecting
                 setInitialLoading(false);
             }),
