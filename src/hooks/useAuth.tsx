@@ -5,11 +5,10 @@ import {
     signInWithEmailAndPassword,
     signOut,
     User,
-    signInWithPopup,
 } from 'firebase/auth'
 import { useRouter } from 'next/router'
 import { createContext, useContext, useEffect, useMemo, useState } from 'react'
-import { auth, provider } from '../utils/firebase'
+import { auth } from '../utils/firebase'
 
 interface IAuth {
     user: User | null
@@ -43,19 +42,21 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const [user, setUser] = useState<User | null>(null);
     const [error, setError] = useState<string | null>(null);
     const [initialLoading, setInitialLoading] = useState(true);
-
+    const router = useRouter();
 
     // User is authenticated
     useEffect(
         () =>
-            onAuthStateChanged(auth, (user) => {
-                if (user) {
+            onAuthStateChanged(auth, (fbUser) => {
+                if (fbUser) {
                     // Logged in...
-                    setUser(user)
+                    setUser(fbUser)
                 } else {
                     // Not logged in...
-                    setUser(null)
-                    router.push("/signup")
+                    setUser(null);
+                    if (router.pathname !== "/login") {
+                        router.push("/signup")
+                    }
                 }
                 // set initial loading to false after redirecting
                 setInitialLoading(false);
@@ -65,11 +66,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
     // User is authenticated
 
 
-    const router = useRouter();
     // signup function
     const signUp = async (email: string, password: string) => {
         setLoading(true);
-
+        console.log("called")
         // creating a use with email and password
         //this is a function from firebase that will create a user with email and password
         //it receives auth,email and password as parameters
@@ -78,7 +78,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
             .then((userCredential) => {
                 setUser(userCredential.user);
                 alert("user created successfully!")
-                router.push('/items');
+                router.push('/');
                 setLoading(false)
             }).catch((err) => {
                 alert(err.message);
@@ -114,7 +114,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
             // setLoading(false);
             setUser(null);
             alert("user logged out successfully!")
-            router.push('/login');
+            if (user === null) router.push('/login');
         }).catch((err) => {
             setError(err.message);
             alert(err.message);

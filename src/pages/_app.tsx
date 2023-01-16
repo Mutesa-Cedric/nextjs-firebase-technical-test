@@ -22,7 +22,6 @@ export default function App({ Component, pageProps }: { Component: any; pageProp
             <Component {...pageProps} />
         }
       </div>
-
     </AuthProvider>
   )
 }

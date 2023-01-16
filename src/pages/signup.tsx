@@ -25,8 +25,9 @@ const Signup = () => {
 
     // handle form submit
     const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        console.log("called")
         e.preventDefault();
-        signUp(formData.email, formData.password);
+        // signUp(formData.email, formData.password);
     }
     return (
         <>

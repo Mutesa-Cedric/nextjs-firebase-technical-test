@@ -38,14 +38,23 @@ const NavBar = () => {
             </div>
 
             {/* account info & logout btn */}
-            <div className='flex items-center space-x-4'>
-                <div className="rounded-full uppercase  bg-black/75 text-white  p-2">
-                    {user?.email?.slice(0, 2)}
-                </div>
-                <button onClick={logout} className="text-white bg-black/75 py-2 px-6 hover:bg-black">
-                    Logout
-                </button>
-            </div>
+            {
+                user ?
+                    <div className='flex items-center space-x-4'>
+                        <div className="rounded-full uppercase  bg-black/75 text-white  p-2">
+                            {user?.email?.slice(0, 2)}
+                        </div>
+                        <button onClick={logout} className="text-white bg-black/75 py-2 px-6 hover:bg-black">
+                            Logout
+                        </button>
+                    </div> :
+                    <Link href='/login'>
+                        <button className="text-white bg-black/75 py-2 px-6 hover:bg-black">
+                            Login
+                        </button>
+                    </Link>
+            }
+
         </div>
     )
 }
